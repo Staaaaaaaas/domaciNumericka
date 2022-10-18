@@ -168,6 +168,7 @@ function calc(){
     // value - LaTeX jednacina, ko zna zna 
     let value = "P_"+count+"(x)=";
     let detSistema = determ();
+    let plus = false;
     for(let i =0; i<count; i++){
         // Kramerovo pravilo
         let a=determ(0,0,i)/detSistema;
@@ -176,12 +177,16 @@ function calc(){
 
         // ovo proverava da ispis bude lep
         // npr ne ispisuje se 0x ili x^1 se pise samo kao x itd...
-        if(a==0 && count-1-i)continue;
-        if(i)value+="+";
-        if(a!=1 || count-1-i==0)value+=a;
+        if(a==0 && count!=1)continue;
+        if(plus)value+="+";
+        if(a!=1 || count-1-i==0){
+            value+=a;
+            plus = true;
+        }
         if(count-1-i){
             value+="x";
             if(count-1-i!=1)value+="^"+(count-1-i);
+            plus = true;
         }
        
     }
