@@ -98,13 +98,13 @@ function check(){
         let valueY = div.children[3].value;
         // polja moraju imati vrednost
         if(flag && (valueY=="" ||valueX=="")){
-            alert("Polja ne mogu biti prazna");
+            alert("Поља не могу бити празна");
             flag = false;
             return;
         }
         // polja moraju biti broj
         if(flag && (isNaN(valueX) || isNaN(valueY))){
-            alert("Unos nije ispravan");
+            alert("Унете вредности нису бројеви");
             flag = false;
             return;
         }
@@ -113,7 +113,7 @@ function check(){
     });
     // ako je velicina setX manja, znaci ima duplikata, sto ne sme :(
     if(flag && setX.size != count){
-        alert("Svi x-evi moraju biti razliciti");
+        alert("Сви x-еви морају бити различити");
         flag = false;
     }
     return flag;
