@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>Document</title>
+    <script type="text/javascript"src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+    
+    <button id="buttonAdd" onclick="addXY()">+</button>
+    <button id="buttonRemove" onclick="removeXY()">-</button>
+    <div id="divXY">
+        <div id="0">
+            <label for="x0">x0:</label>
+            <input type="text" id="x0" name="x0">
+            <label for="y0">y0:</label>
+            <input type="text" id="y0" name="y0">
+        </div>
+    </div>
+    <button onclick="calc()">Izracunaj</button>
+    <div id="formula"></div>
+    <canvas width="500" height="500" id="cnvs"></canvas>
+    <script src="./main.js"></script>
+
+</body>
+</html>
