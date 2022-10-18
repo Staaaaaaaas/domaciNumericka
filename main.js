@@ -190,7 +190,7 @@ function calc(){
     ctx.strokeStyle = "red";
     ctx.beginPath();
     ctx.moveTo(-251,0);
-    for(let i =-250; i<250;i+=0.5){
+    for(let i =-250; i<250;i+=0.01){
         let y = 0;
         for(let j=0;j<count;j++){
             y+=a_ovi[j]*Math.pow(i,count-1-j);
