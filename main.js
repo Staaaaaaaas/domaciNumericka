@@ -240,7 +240,7 @@ function calc(){
         // ovo proverava da ispis bude lep
         // npr ne ispisuje se 0x ili x^1 se pise samo kao x itd...
         if(a==0 && count!=1)continue;
-        if(plus)value+="+";
+        if(plus && a>=0)value+="+";
         if(a!=1 || count-1-i==0){
             value+=a;
             plus = true;
