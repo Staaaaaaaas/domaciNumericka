@@ -19,6 +19,10 @@ addEventListener("load",(event)=>{
 
 
 addEventListener("keypress",(event)=>{
+    if(event.key == "Enter"){
+        calc();
+        return;
+    }
     if(event.target.tagName == "INPUT")return;
     if(event.key == "-"){
         ctx.scale(1/2,1/2); 
