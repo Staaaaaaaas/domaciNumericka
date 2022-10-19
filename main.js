@@ -90,12 +90,9 @@ function drawFunction(){
     draw();
     ctx.strokeStyle = "red";
     ctx.lineWidth = 0.3;
+    
+    
     ctx.beginPath();
-    let startY = 0;
-    for(let j=0;j<count;j++){
-        startY+=a_ovi[j]*Math.pow(-scaledWidth-1,count-1-j);
-    }
-    ctx.moveTo(scaledWidth-1,startY);
     for(let i =-scaledWidth; i<scaledWidth;i+=(2*scaledWidth)/1000000){
         let y = 0;
         for(let j=0;j<count;j++){
