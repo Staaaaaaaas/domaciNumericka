@@ -227,7 +227,7 @@ function calc(){
     a_ovi = [];
 
     // value - LaTeX jednacina, ko zna zna 
-    let value = "P_"+count+"(x)=";
+    let value = "P_"+(count-1)+"(x)=";
     let detSistema = determ();
     let plus = false;
     for(let i =0; i<count; i++){
