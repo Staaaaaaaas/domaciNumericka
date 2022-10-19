@@ -9,8 +9,10 @@ const ctx = canvas.getContext("2d");
 let divs = [document.getElementById("base")];
 // div u kom ce se pisati jednacina polinoma
 const equation = document.getElementById("equation");
-let scaledWidth = 250/8;
+const width = 500, height = 500;
+let scale = 8;
 let a_ovi =[];
+let offset = {x:0,y:0};
 
 // podesavanje platna kada se sajt ucita
 addEventListener("load",(event)=>{
@@ -18,7 +20,7 @@ addEventListener("load",(event)=>{
 });
 
 
-addEventListener("keypress",(event)=>{
+addEventListener("keydown",(event)=>{
     if(event.key == "Enter"){
         calc();
         return;
@@ -26,12 +28,32 @@ addEventListener("keypress",(event)=>{
     if(event.target.tagName == "INPUT")return;
     if(event.key == "-"){
         ctx.scale(1/2,1/2); 
-        scaledWidth*=2;
+        scale*=2;
         drawFunction();
     }
     else if(event.key == "+" || event.key=="="){
         ctx.scale(2, 2);
-        scaledWidth/=2;
+        scale/=2;
+        drawFunction();
+    }
+    else if(event.key == "ArrowRight"){
+        ctx.translate(-scale,0);
+        offset.x-=scale;
+        drawFunction();
+    }
+    else if(event.key == "ArrowLeft"){
+        ctx.translate(scale,0);
+        offset.x+=scale;
+        drawFunction();
+    }
+    else if(event.key == "ArrowUp"){
+        ctx.translate(0,-scale);
+        offset.y-=scale;
+        drawFunction();
+    }
+    else if(event.key == "ArrowDown"){
+        ctx.translate(0,scale);
+        offset.y+=scale;
         drawFunction();
     }
 });
@@ -59,18 +81,18 @@ function setup(){
 // crtanje grafika
 function draw(){
     // pozadina
-    rect(0,0,2*scaledWidth,2*scaledWidth,"white");
+    rect(0,0,width*scale-offset.x,width*scale-offset.y,"white");
 
     ctx.strokeStyle = "#aaaaaa"
     ctx.lineWidth = 0.1;
     ctx.beginPath();
-    for(let i = Math.floor(-scaledWidth); i< Math.ceil(scaledWidth); i+=1){
-        ctx.moveTo(i,-scaledWidth);
-        ctx.lineTo(i,scaledWidth);
+    for(let i = Math.floor(-(width/2)*scale-offset.x); i< Math.ceil((width/2)*scale-offset.x); i+=1){
+        ctx.moveTo(i,-(height/2)*scale-offset.y);
+        ctx.lineTo(i,(height/2)*scale-offset.y);
     }
-    for(let i = Math.floor(-scaledWidth); i< Math.ceil(scaledWidth); i+=1){
-        ctx.moveTo(-scaledWidth,i);
-        ctx.lineTo(scaledWidth,i);
+    for(let i = Math.floor(-(height/2)*scale-offset.y); i< Math.ceil((height/2)*scale-offset.y); i+=1){
+        ctx.moveTo(-(width/2)*scale-offset.x,i);
+        ctx.lineTo((width/2)*scale-offset.x,i);
     }
     ctx.stroke();
 
@@ -79,11 +101,11 @@ function draw(){
 
     ctx.beginPath();
     // crtanje x-ose
-    ctx.moveTo(-scaledWidth,0);
-    ctx.lineTo(scaledWidth,0);
+    ctx.moveTo(-(width/2)*scale-offset.x,0);
+    ctx.lineTo((width/2)*scale-offset.x,0);
     // crtanje y-ose
-    ctx.moveTo(0,-scaledWidth);
-    ctx.lineTo(0,scaledWidth);
+    ctx.moveTo(0,-(height/2)*scale-offset.y);
+    ctx.lineTo(0,(height/2)*scale-offset.y);
     
     ctx.stroke();
 
@@ -97,7 +119,7 @@ function drawFunction(){
     
     
     ctx.beginPath();
-    for(let i =-scaledWidth; i<scaledWidth;i+=(2*scaledWidth)/1000000){
+    for(let i =-(width/2)*scale-offset.x; i<(width/2)*scale-offset.x;i+=(2*(width/2)*scale)/1000000){
         let y = 0;
         for(let j=0;j<count;j++){
             y+=a_ovi[j]*Math.pow(i,count-1-j);
