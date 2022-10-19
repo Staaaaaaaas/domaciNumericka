@@ -228,9 +228,10 @@ function calc(){
     a_ovi = [];
 
     // value - LaTeX jednacina, ko zna zna 
-    let value = "P_"+(count-1)+"(x)=";
+    let value = "";
     let detSistema = determ();
     let plus = false;
+    let power = -1;
     for(let i =0; i<count; i++){
         // Kramerovo pravilo
         let a=determ(0,0,i)/detSistema;
@@ -240,6 +241,7 @@ function calc(){
         // ovo proverava da ispis bude lep
         // npr ne ispisuje se 0x ili x^1 se pise samo kao x itd...
         if(a==0 && count!=1)continue;
+        if(power==-1)power = count-1-i;
         if(plus && a>=0)value+="+";
         if(a!=1 || count-1-i==0){
             value+=a;
@@ -254,7 +256,7 @@ function calc(){
     }
     // crtanje grafika
     drawFunction();
-    equation.innerText = "$$"+value+"$$";
+    equation.innerText = "$$"+"P_"+(power)+"(x)="+value+"$$";
     // render LateX jednacine
     MathJax.typeset();
 }
