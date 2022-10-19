@@ -1,5 +1,11 @@
 #divXY{
     background-color:#eeeeee;
+    width: 500px;
+}
+.inputXY{
+    display: inline;
+    width: 30%;
+    
 }
 canvas{
     border: 3px solid;

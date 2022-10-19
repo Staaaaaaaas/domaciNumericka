@@ -3,15 +3,33 @@ let count = 1;
 // div element koji sadrzi ostale divove
 const divXY = document.getElementById("divXY");
 // kontekst platna, na njemu se crta
-let ctx;
+const canvas = document.getElementById("cnvs");
+const ctx = canvas.getContext("2d");
 // lista svih divova, koji sadrze input za X i Y koordinate, na pocetku ima jedan div
 let divs = [document.getElementById("base")];
 // div u kom ce se pisati jednacina polinoma
 const equation = document.getElementById("equation");
+let scaledWidth = 250/8;
+let a_ovi =[];
 
 // podesavanje platna kada se sajt ucita
 addEventListener("load",(event)=>{
     setup();
+});
+
+
+addEventListener("keypress",(event)=>{
+    if(event.target.tagName == "INPUT")return;
+    if(event.key == "-"){
+        ctx.scale(1/2,1/2); 
+        scaledWidth*=2;
+        drawFunction();
+    }
+    else if(event.key == "+" || event.key=="="){
+        ctx.scale(2, 2);
+        scaledWidth/=2;
+        drawFunction();
+    }
 });
 
 // crtanje pravougaoinka sa zadatim koordinatama centra, 
@@ -22,36 +40,76 @@ function rect(x,y,w,h,clr="blue"){
 }
 // podesavanje platna
 function setup(){
-    const canvas = document.getElementById("cnvs");
-    ctx = canvas.getContext("2d");
+    
+    
     // pomeranje konteksta, jer je inace 
     // (0,0) gornji levi ugao, sada je to centar
     // jer je visina i sirina platna 500px
     ctx.translate(250,250);
     // "zoom" platna, odnosno promena razmere
     // negativna za y jer inace y opada od gore ka dole
-    ctx.scale(10,-10);
+    ctx.scale(8,-8);
     
     draw();
 }
 // crtanje grafika
 function draw(){
     // pozadina
-    rect(0,0,500,500,"white");
+    rect(0,0,2*scaledWidth,2*scaledWidth,"white");
+
+    ctx.strokeStyle = "#aaaaaa"
+    ctx.lineWidth = 0.1;
+    ctx.beginPath();
+    for(let i = Math.floor(-scaledWidth); i< Math.ceil(scaledWidth); i+=1){
+        ctx.moveTo(i,-scaledWidth);
+        ctx.lineTo(i,scaledWidth);
+    }
+    for(let i = Math.floor(-scaledWidth); i< Math.ceil(scaledWidth); i+=1){
+        ctx.moveTo(-scaledWidth,i);
+        ctx.lineTo(scaledWidth,i);
+    }
+    ctx.stroke();
 
     ctx.lineWidth = 0.5;
     ctx.strokeStyle = "grey";
 
     ctx.beginPath();
     // crtanje x-ose
-    ctx.moveTo(-250,0);
-    ctx.lineTo(250,0);
+    ctx.moveTo(-scaledWidth,0);
+    ctx.lineTo(scaledWidth,0);
     // crtanje y-ose
-    ctx.moveTo(0,-250);
-    ctx.lineTo(0,250);
-
+    ctx.moveTo(0,-scaledWidth);
+    ctx.lineTo(0,scaledWidth);
+    
     ctx.stroke();
+
+    
 }
+
+function drawFunction(){
+    draw();
+    ctx.strokeStyle = "red";
+    ctx.lineWidth = 0.3;
+    ctx.beginPath();
+    let startY = 0;
+    for(let j=0;j<count;j++){
+        startY+=a_ovi[j]*Math.pow(-scaledWidth-1,count-1-j);
+    }
+    ctx.moveTo(scaledWidth-1,startY);
+    for(let i =-scaledWidth; i<scaledWidth;i+=(2*scaledWidth)/1000000){
+        let y = 0;
+        for(let j=0;j<count;j++){
+            y+=a_ovi[j]*Math.pow(i,count-1-j);
+        }
+        ctx.lineTo(i,y);
+    }
+    ctx.stroke();
+    // crtanje zadatih tacaka
+    for(let i=0;i<count;i++){
+        rect(Number(divs[i].children[1].value),Number(divs[i].children[3].value),1,1);
+    }
+}
+
 // dodavanje tacke
 function addXY(){
     // novi div za unos podataka tacke
@@ -61,11 +119,14 @@ function addXY(){
     newLabelX.htmlFor = "x"+count;
     newLabelX.innerText = "x"+count+":";
     let newX = document.createElement("input");
+    newX.classList.add("inputXY");
+
     // labela i unos za Y
     let newLabelY = document.createElement("label");
     newLabelY.htmlFor = "y"+count;
     newLabelY.innerText = "y"+count+":";
     let newY = document.createElement("input");
+    newY.classList.add("inputXY");
 
     newDiv.appendChild(newLabelX);
     newDiv.appendChild(newX);
@@ -163,7 +224,7 @@ function calc(){
     // ako podaci nisu korektno upisani, prekida se funkcija
     if(check()==false)return;
     // a_ovi - skup svih koeficijenata polinoma
-    let a_ovi = [];
+    a_ovi = [];
 
     // value - LaTeX jednacina, ko zna zna 
     let value = "P_"+count+"(x)=";
@@ -191,22 +252,7 @@ function calc(){
        
     }
     // crtanje grafika
-    draw();
-    ctx.strokeStyle = "red";
-    ctx.beginPath();
-    ctx.moveTo(-251,0);
-    for(let i =-250; i<250;i+=0.01){
-        let y = 0;
-        for(let j=0;j<count;j++){
-            y+=a_ovi[j]*Math.pow(i,count-1-j);
-        }
-        ctx.lineTo(i,y);
-    }
-    ctx.stroke();
-    // crtanje zadatih tacaka
-    for(let i=0;i<count;i++){
-        rect(Number(divs[i].children[1].value),Number(divs[i].children[3].value),1,1);
-    }
+    drawFunction();
     equation.innerText = "$$"+value+"$$";
     // render LateX jednacine
     MathJax.typeset();
