@@ -21,7 +21,7 @@ let offset = {x:0,y:0};
 
 // dodavanje tacke
 function addXY(){
-    if(count >= 30) return;
+    if(count >= 10) return;
     // novi div za unos podataka tacke
     let newDiv = document.createElement("div");
     // labela i unos za X
