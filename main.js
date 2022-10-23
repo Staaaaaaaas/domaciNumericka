@@ -188,6 +188,7 @@ function calc(){
     // ako podaci nisu korektno upisani, prekida se funkcija
     if(check()==false)return;
     x_evi = []; 
+    y_ovi = [];
     for(let i=0;i<count;i++){
         x_evi.push(Number(divs[i].children[1].value));
         y_ovi.push(Number(divs[i].children[3].value));
