@@ -168,7 +168,7 @@ function drawFunction(){
     
     
     ctx.beginPath();
-    for(let i =-(width/2)*scale-offset.x; i<(width/2)*scale-offset.x;i+=(2*(width/2)*scale)/1000000){
+    for(let i =-(width/2)*scale-offset.x; i<(width/2)*scale-offset.x;i+=(2*(width/2)*scale)/10000){
         let y = 0;
         for(let j=0;j<count;j++){
             y+=a_ovi[j]*Math.pow(i,count-1-j);
